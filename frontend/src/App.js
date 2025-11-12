@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // Impor semua yang diperlukan dari react-router-dom dan axios
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ProfilePage from './components/ProfilePage';
 
 // --- KOMPONEN LOGINPAGE ---
 // Kita letakkan semua komponen di satu file untuk mengatasi masalah resolusi
@@ -281,6 +282,14 @@ function DashboardPage() {
                   </span>
                 </div>
               </div>
+              <div className="mt-4">
+                <button
+                  onClick={() => navigate('/profile')}
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-cyan-600 rounded-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all"
+                >
+                  Lihat Profile
+                </button>
+              </div>
             </div>
 
             <div className="bg-slate-800 p-6 rounded-lg shadow-lg">
@@ -359,6 +368,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         {/* Arahkan rute dasar ke login */}
         <Route path="/" element={<LoginPage />} />
       </Routes>
