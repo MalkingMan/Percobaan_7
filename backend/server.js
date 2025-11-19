@@ -51,4 +51,28 @@ res.status(401).json({ message: 'Token tidak valid!' });
 }
 });
 
+// UPDATE PROFILE
+app.put('/api/auth/profile', async (req, res) => {
+const token = req.headers.authorization?.split(' ')[1];
+if (!token) return res.status(401).json({ message: 'Token tidak ditemukan!' });
+try {
+const decoded = jwt.verify(token, SECRET_KEY);
+const { nama } = req.body;
+
+// Validate input
+if (!nama || typeof nama !== 'string' || nama.trim().length === 0) {
+return res.status(400).json({ message: 'Nama tidak valid!' });
+}
+
+const userIndex = users.findIndex(u => u.email === decoded.email);
+if (userIndex === -1) return res.status(404).json({ message: 'User tidak ditemukan!' });
+
+users[userIndex].nama = nama.trim();
+const newToken = jwt.sign({ nama: users[userIndex].nama, email: users[userIndex].email, role: users[userIndex].role }, SECRET_KEY, { expiresIn: '1h' });
+res.json({ message: 'Profile berhasil diupdate!', token: newToken });
+} catch (e) {
+res.status(401).json({ message: 'Token tidak valid!' });
+}
+});
+
 app.listen(3001, () => console.log('✅ Backend berjalan di http://localhost:3001'));
